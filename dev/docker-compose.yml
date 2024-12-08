@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  sveltekit:
+    build:
+      context: ..
+      dockerfile: dev/Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../src:/app/src   # Mount the src directory
+      - ../static:/app/static # Mount the static directory
+    environment:
+      NODE_ENV: development
+    command: ["node", "/app/node_modules/vite/bin/vite.js", "--host", "0.0.0.0"]
+
