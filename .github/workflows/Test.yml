@@ -1,4 +1,4 @@
-name: Test and Deploy to Netlify
+name: Test Build
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-test:
-    name: Build and Deploy to Netlify
+    name: Test Build
     runs-on: ubuntu-latest
 
     steps:
@@ -19,8 +19,6 @@ jobs:
       # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
-        with:
-          node-version: '16'
 
       # Step 3: Install dependencies
       - name: Install Dependencies
