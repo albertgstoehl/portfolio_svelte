@@ -17,7 +17,7 @@ export async function load() {
 
     // Return error to the +page.svelte to handle appropriately
     return {
-      error: error,
+      error: 'Failed to fetch projects. Please try again later.',
     };
   }
 }
