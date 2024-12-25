@@ -9,10 +9,7 @@
     <Navbar />
 
     <!-- Main Content -->
-    <main class="pt-16 flex-grow">
+    <main class="pt-16 min-h-screen flex items-center justify-center text-center">
         <slot />
     </main>
-
-    <!-- Footer (optional) -->
-    <Footer />
 </div>

@@ -1,4 +1,4 @@
-<div class="min-h-screen flex items-center justify-center text-center animate-fade-up animate-once">
+<div class="animate-fade-up">
     <section class="bg-main text-white py-10">
     <h1 class="text-4xl font-bold">Welcome to My Portfolio</h1>
     <p class="mt-4 text-accent">Let's build something amazing together!</p>
