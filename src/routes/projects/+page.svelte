@@ -14,7 +14,7 @@
                     class="h-full max-w-sm p-6 rounded-lg shadow-md dark:bg-blue-950/30 backdrop-blur-xl hover:border-4 hover:border-indigo-500/100"
                     class:lg:col-start-2={index % 3 === 0 && index === data.projects.length - 1}
                 >
-                    <!-- Ensure images are the same size -->
+                    
                     <div class="w-full h-48 overflow-hidden">
                         <img
                             src={project.image}
