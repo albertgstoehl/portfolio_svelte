@@ -4,7 +4,7 @@ services:
   sveltekit:
     build:
       context: ..
-      dockerfile: dev/Dockerfile
+      dockerfile: docker/Dockerfile
     ports:
       - "5173:5173"
     volumes:
