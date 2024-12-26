@@ -4,8 +4,6 @@
     import Footer from '../components/Footer.svelte';
     import { menuHeight } from '../stores/menuStore';
 
-    console.log($menuHeight);
-
     $: dynamicMargin = `calc(4rem + ${$menuHeight}px)`; // Default navbar height (4rem)
 </script>
 
