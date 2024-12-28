@@ -34,7 +34,7 @@ export {
 	Description as SheetDescription,
 };
 export const sheetVariants = tv({
-	base: "bg-background fixed z-50 gap-4 p-6 shadow-lg",
+	base: "bg-background fixed z-50 gap-4 p-6 shadow-lg dark text-white",
 	variants: {
 		side: {
 			top: "inset-x-0 top-0 border-b",

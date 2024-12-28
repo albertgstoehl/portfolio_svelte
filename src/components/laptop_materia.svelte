@@ -84,10 +84,16 @@
         isHovering = false; // Hide the text
         onPointerLeave();
     };
+
+    // Create an emissive material for the screen
+    const screenMaterial = new THREE.MeshStandardMaterial({
+        emissive: new THREE.Color(0x000000), // White light emission
+        emissiveIntensity: 5, // Adjust intensity for brightness
+        color: 0x444444, // Base color for contrast
+    });
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>
-    <T.AxesHelper args={[5]} />
     {#await gltf}
         {@render fallback?.()}
     {:then gltf}
@@ -102,7 +108,7 @@
                 <!-- Apply the black square material with icons to Object_34 -->
                 <T.Mesh
                     geometry={gltf.nodes.Object_34.geometry}
-                    material={gltf.materials.White}
+                    material={screenMaterial}
                 />
             </T.Group>
 
