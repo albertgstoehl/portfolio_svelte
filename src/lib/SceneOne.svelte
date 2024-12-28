@@ -21,8 +21,8 @@
     <OrbitControls
         allowPan={false}
         enableDamping
-        maxDistance={300}
-        minDistance={1}
+        maxDistance={20}
+        minDistance={7}
         enableZoom={enableZoom}
     />
 </T.PerspectiveCamera>
