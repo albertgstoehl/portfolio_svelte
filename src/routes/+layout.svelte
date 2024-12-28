@@ -7,7 +7,7 @@
     $: dynamicMargin = `calc(4rem + ${$menuHeight}px)`; // Default navbar height (4rem)
 </script>
 
-<div class="min-h-screen bg-gradient-to-r from-blue-800 to-indigo-900 text-white flex flex-col">
+<div class="min-h-screen bg-black text-white flex flex-col">
     <!-- Navbar -->
     <Navbar />
 
