@@ -1,12 +1,23 @@
-<div class="animate-fade-up">
-    <section class="bg-main text-white py-10">
-    <h1 class="text-4xl font-bold">Welcome to My Portfolio</h1>
-    <p class="mt-4 text-accent">Let's build something amazing together!</p>
-    <a href="/projects">
-    <button class="mt-6 bg-accent hover:bg-accent-dark text-white px-6 py-3 rounded-lg">
-        View My Work
-    </button>
-    </a>
-    </section>
-</div>
+<script>
+    import {Canvas} from "@threlte/core";
+    import SceneOne from "../lib/SceneOne.svelte";
 
+    export let data; // Data returned from the `load` function
+    let selectedIcons = [];
+
+    // Randomly select a project's technologies
+    if (data?.projects && data.projects.length > 0) {
+        const randomProject =
+            data.projects[Math.floor(Math.random() * data.projects.length)];
+        selectedIcons = randomProject.technologies.map((tech) => tech.icon); // Extract icons
+    }
+</script>
+
+<section class="p-5">
+    <div class="canvas-wrapper h-[700px]">
+        <Canvas>
+            <!-- Pass the selected icons to the scene -->
+            <SceneOne {selectedIcons} />
+        </Canvas>
+    </div>
+</section>
