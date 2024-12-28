@@ -5,11 +5,10 @@
     export let data; // Data returned from the `load` function
     let selectedIcons = [];
 
-    // Randomly select a project's technologies
+    // Extract unique icons from all projects' technologies
     if (data?.projects && data.projects.length > 0) {
-        const randomProject =
-            data.projects[Math.floor(Math.random() * data.projects.length)];
-        selectedIcons = randomProject.technologies.map((tech) => tech.icon); // Extract icons
+        const allIcons = data.projects.flatMap((project) => project.technologies.map((tech) => tech.icon));
+        selectedIcons = [...new Set(allIcons)]; // Remove duplicates
     }
 </script>
 
