@@ -3,11 +3,11 @@
     import { OrbitControls } from '@threlte/extras';
     import Laptop from '../components/laptop_materia.svelte';
 
-    export let selectedIcons = []; // Icons passed from +page.svelte
+    export let selectedTechnologies = []; // Icons passed from +page.svelte
 
     let isMobile = window.innerWidth <= 768;
 
-    $: cameraZ = isMobile ? 30 : 8;
+    $: cameraZ = isMobile ? 15 : 8;
     $: enableZoom = !isMobile;
 </script>
 
@@ -28,9 +28,10 @@
 </T.PerspectiveCamera>
 
 <T.AmbientLight intensity={0.2} />
-<T.DirectionalLight position={[10, 5, 0]} />
+<T.DirectionalLight intensity={2} position={[5, 5, 5]} />
 
 <!-- Add the Laptop Model with selected icons -->
-<T.Group position={[0, -7, 0]} scale={5}>
-    <Laptop castShadow receiveShadow icons={selectedIcons} />
+<T.Group position={[0, 0, 0]} scale={5}>
+    <T.AxesHelper args={[5]} />
+    <Laptop castShadow receiveShadow technologies={selectedTechnologies} />
 </T.Group>

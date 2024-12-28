@@ -1,22 +1,34 @@
 <script>
-    import {Canvas} from "@threlte/core";
+    import { Canvas } from "@threlte/core";
     import SceneOne from "../lib/SceneOne.svelte";
 
     export let data; // Data returned from the `load` function
-    let selectedIcons = [];
+    let selectedTechnologies = [];
 
-    // Extract unique icons from all projects' technologies
+    // Extract unique technologies (icon and name) from all projects
     if (data?.projects && data.projects.length > 0) {
-        const allIcons = data.projects.flatMap((project) => project.technologies.map((tech) => tech.icon));
-        selectedIcons = [...new Set(allIcons)]; // Remove duplicates
+        const allTechnologies = data.projects.flatMap((project) =>
+            project.technologies.map((tech) => ({
+                icon: tech.icon,
+                name: tech.name,
+            }))
+        );
+
+        // Remove duplicates based on icon and name
+        const uniqueTechnologies = new Map();
+        allTechnologies.forEach((tech) => {
+            uniqueTechnologies.set(tech.icon, tech);
+        });
+
+        selectedTechnologies = Array.from(uniqueTechnologies.values());
     }
 </script>
 
 <section class="p-5">
     <div class="canvas-wrapper h-[700px]">
         <Canvas>
-            <!-- Pass the selected icons to the scene -->
-            <SceneOne {selectedIcons} />
+            <!-- Pass the selected technologies to the scene -->
+            <SceneOne {selectedTechnologies} />
         </Canvas>
     </div>
 </section>
