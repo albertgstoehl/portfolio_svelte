@@ -1,4 +1,5 @@
 <script>
+    import { goto } from "$app/navigation";
     import { T } from "@threlte/core";
     import { useGltf, interactivity, useCursor, Text } from "@threlte/extras";
     import * as THREE from "three";
@@ -85,6 +86,11 @@
         onPointerLeave();
     };
 
+    const handlePointerClick = (technologyName) => {
+        // Navigate to the /projects/ route with the technology as a query parameter
+        goto(`/projects?technology=${encodeURIComponent(technologyName)}`);
+    };
+
     // Create an emissive material for the screen
     const screenMaterial = new THREE.MeshStandardMaterial({
         emissive: new THREE.Color(0x000000), // White light emission
@@ -130,6 +136,7 @@
                             handlePointerLeave();
                             onPointerLeave();
                         }}
+                        onpointerdown={() => handlePointerClick(name)}
                     />
                 {/each}
                 <!-- Hover text -->
