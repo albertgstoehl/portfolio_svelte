@@ -3,6 +3,8 @@
     import { T } from "@threlte/core";
     import { useGltf, interactivity, useCursor, Text } from "@threlte/extras";
     import * as THREE from "three";
+    import { onMount } from "svelte";
+    import { log } from "three/tsl";
 
     let {
         technologies,
@@ -25,15 +27,13 @@
     let isHovering = $state(false); // State to show/hide hover text
     let hoverText = $state(""); // Text to show when hovering over an icon
 
-    // Generate icon meshes dynamically
-    let iconMeshes = [];
+    let iconMeshes = $state([]); // This will hold the generated icon meshes
 
     interactivity(); // Enable interactivity
 
     // Function to create icon meshes
     const createIconMeshes = (screengeometry) => {
-        const iconMeshes = [];
-
+        let tmpIconMeshes = [];
         const iconSize = 0.2; // Size of each icon
         const iconsPerRow = 5; // Number of icons per row
         const spacing = iconSize + 0.1; // Spacing between icons
@@ -62,7 +62,7 @@
 
             const iconGeometry = new THREE.PlaneGeometry(iconSize, iconSize);
 
-            iconMeshes.push({
+            tmpIconMeshes.push({
                 id: `icon-${index}`,
                 name: technology.name,
                 position: [x, y, z],
@@ -70,7 +70,7 @@
                 material: iconMaterial,
             });
         });
-        return iconMeshes;
+        return tmpIconMeshes;
     };
 
     const { onPointerEnter, onPointerLeave } = useCursor();
@@ -97,13 +97,21 @@
         emissiveIntensity: 5, // Adjust intensity for brightness
         color: 0x444444, // Base color for contrast
     });
+
+    // Use onMount lifecycle method to load the GLTF and create icon meshes
+    onMount(async () => {
+        // Wait for the GLTF model to load
+        let loadedGltf = await gltf;
+        iconMeshes = createIconMeshes(loadedGltf.nodes.Object_34.geometry);
+        handlePointerEnter(iconMeshes[0].name)
+        setTimeout(handlePointerLeave, 10)
+    });
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>
     {#await gltf}
         {@render fallback?.()}
     {:then gltf}
-        {(iconMeshes = createIconMeshes(gltf.nodes.Object_34.geometry))}
         <!-- Root group calibrated to position laptop screen center at (0, 0, 0) -->
         <T.Group position={rootPosition} rotation={rootRotation}>
             <T.Group position={[0, 0.5, -1.02]} rotation={[-2.17, 0, 0]}>
@@ -123,22 +131,22 @@
                 position={iconGroupCounterPosition}
                 rotation={iconGroupInverseRotation}
             >
-                {#each iconMeshes as { id, position, geometry, material, name } (id)}
-                    <T.Mesh
-                        {position}
-                        {geometry}
-                        {material}
-                        onpointerenter={() => {
-                            handlePointerEnter(name);
-                            onPointerEnter();
-                        }}
-                        onpointerleave={() => {
-                            handlePointerLeave();
-                            onPointerLeave();
-                        }}
-                        onpointerdown={() => handlePointerClick(name)}
-                    />
-                {/each}
+                {#if iconMeshes.length > 0}
+                    {#each iconMeshes as { id, position, geometry, material, name } (id)}
+                        <T.Mesh
+                            {position}
+                            {geometry}
+                            {material}
+                            onpointerenter={() => {
+                                handlePointerEnter(name);
+                            }}
+                            onpointerleave={() => {
+                                handlePointerLeave();
+                            }}
+                            onpointerdown={() => handlePointerClick(name)}
+                        />
+                    {/each}
+                {/if}
                 <!-- Hover text -->
                 {#if isHovering}
                     <Text

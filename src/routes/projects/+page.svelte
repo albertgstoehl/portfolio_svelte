@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import ProjectCard from "../../components/ProjectCard.svelte";
     import { Button } from "$lib/components/ui/button";
     import { ArrowLeft, Layers } from "lucide-svelte";
@@ -21,7 +21,7 @@
     {:else}
         <div class="animate-fade-up space-y-8">
             {#if data.technology_filter !== null}
-                <div class="border text-white p-8 rounded-lg shadow-lg">
+                <div class=" text-white p-8 rounded-lg shadow-lg border">
                     <h1 class="text-3xl font-bold mb-2">
                         Projects using {data.technology_filter}
                     </h1>
@@ -35,7 +35,7 @@
                 </h1>
             {/if}
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
                 {#each data.projects as project}
                     <ProjectCard
                         imageUrl={project.image}

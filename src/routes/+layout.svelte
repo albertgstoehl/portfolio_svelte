@@ -12,7 +12,7 @@
     <Navbar />
 
     <!-- Main Content -->
-    <main class="min-h-screen flex items-center justify-center text-center" style={`margin-top: ${dynamicMargin}`}>
+    <main class="min-h-screen flex items-center justify-center text-center dark" style={`margin-top: ${dynamicMargin}`}>
         <slot />
     </main>
 </div>
