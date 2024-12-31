@@ -17,3 +17,9 @@ export async function connectToDatabase() {
   }
   return db;
 }
+
+export async function getProjects() {
+  const db = await connectToDatabase();
+  const projects = await db.collection('projects').find({}).toArray();
+  return projects;
+}

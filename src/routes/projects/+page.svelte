@@ -1,45 +1,68 @@
 <script>
-    import ProjectCard from '../../components/ProjectCard.svelte';
+    import ProjectCard from "../../components/ProjectCard.svelte";
+    import { Button } from "$lib/components/ui/button";
+    import { ArrowLeft, Layers } from "lucide-svelte";
     export let data;
 
-    function handleClick(event, slug) {
-        event.preventDefault(); // Prevent immediate navigation
-        const selected_card = event.currentTarget;
-        const root_div = selected_card.closest('.animate-fade-up');
-
-        // Remove the root_div and replace with selected card
-        if (root_div) {
-            root_div.replaceWith(selected_card);
-        }
-
-        // Add Animation
-        selected_card.classList.add(
-            'animate-ping',
+    if (data.technology_filter !== null) {
+        data.projects = data.projects.filter((project) =>
+            project.technologies.some(
+                (tech) => tech.name === data.technology_filter,
+            ),
         );
-
-        // Wait 0.5 seconds before redirecting
-        setTimeout(() => {
-            window.location.href = `/projects/${slug}`;
-        }, 250);
     }
 </script>
 
-{#if data.error}
-    <p class="text-red-500">{data.error}</p>
-{:else if data.projects.length === 0}
-    <p>No projects found.</p>
-{:else}
-    <div class="animate-fade-up pt-16">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {#each data.projects as project}
-                <ProjectCard
-                    imageUrl={project.image}
-                    title={project.title}
-                    description={project.description}
-                    technologies={project.technologies}
-                    slug={project.slug}
-                />
-            {/each}
+<div class="container mx-auto px-4 py-8 dark">
+    {#if data.error}
+        <p class="text-red-500 text-center text-lg">{data.error}</p>
+    {:else if data.projects.length === 0}
+        <p class="text-center text-lg text-gray-600 dark:text-gray-400">No projects found.</p>
+    {:else}
+        <div class="animate-fade-up space-y-8">
+            {#if data.technology_filter !== null}
+                <div class=" text-white p-8 rounded-lg shadow-lg border">
+                    <h1 class="text-3xl font-bold mb-2">
+                        Projects using {data.technology_filter}
+                    </h1>
+                    <p class="text-blue-100">
+                        Explore projects that leverage the power of {data.technology_filter}
+                    </p>
+                </div>
+            {:else}
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white">
+                    All Projects
+                </h1>
+            {/if}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+                {#each data.projects as project}
+                    <ProjectCard
+                        imageUrl={project.image}
+                        title={project.title}
+                        description={project.description}
+                        technologies={project.technologies}
+                        slug={project.slug}
+                    />
+                {/each}
+            </div>
+
+            {#if data.technology_filter !== null}
+                <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
+                    <Button variant="outline" class="w-full sm:w-auto">
+                        <a href="/projects" class="flex items-center justify-center">
+                            <Layers class="mr-2 h-4 w-4" />
+                            Show all projects
+                        </a>
+                    </Button>
+                    <Button variant="ghost" class="w-full sm:w-auto">
+                        <a href="/" class="flex items-center justify-center">
+                            <ArrowLeft class="mr-2 h-4 w-4" />
+                            Go back
+                        </a>
+                    </Button>
+                </div>
+            {/if}
         </div>
-    </div>
-{/if}
+    {/if}
+</div>

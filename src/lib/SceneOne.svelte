@@ -9,6 +9,12 @@
 
     $: cameraZ = isMobile ? 15 : 8;
     $: enableZoom = !isMobile;
+    $: groupYPosition = isMobile ? 4.5 : 1.5;
+
+    // Optional: Add a listener for window resize to dynamically adjust isMobile
+    window.addEventListener('resize', () => {
+        isMobile = window.innerWidth <= 768;
+    });
 </script>
 
 <T.PerspectiveCamera
@@ -31,7 +37,6 @@
 <T.DirectionalLight intensity={2} position={[5, 5, 5]} />
 
 <!-- Add the Laptop Model with selected icons -->
-<T.Group position={[0, 0, 0]} scale={5}>
-    <T.AxesHelper args={[5]} />
+<T.Group position={[0, groupYPosition, 0]} scale={5}>
     <Laptop castShadow receiveShadow technologies={selectedTechnologies} />
 </T.Group>

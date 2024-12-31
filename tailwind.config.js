@@ -59,6 +59,9 @@ const config = {
 			}
 		}
 	},
+	plugins: [
+		require('tailwindcss-animated')
+	],
 };
 
 export default config;
