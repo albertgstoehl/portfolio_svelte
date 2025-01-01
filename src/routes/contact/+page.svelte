@@ -36,7 +36,7 @@
         <form
             name="contact"
             method="POST"
-            data-netlify="true"
+            netlify
             on:submit|preventDefault={handleSubmit}
             class="space-y-4"
         >
