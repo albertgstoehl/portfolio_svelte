@@ -1,13 +1,13 @@
-<script lang="ts">
+<script>
     import { Button } from "$lib/components/ui/button/index.js";
     import * as Card from "$lib/components/ui/card/index.js";
     import { Badge } from "$lib/components/ui/badge/index.js";
 
-    export let imageUrl: string;
-    export let title: string;
-    export let description: string;
-    export let technologies: string[];
-    export let slug: string[];
+    export let imageUrl;
+    export let title;
+    export let description;
+    export let technologies;
+    export let slug;
 </script>
 
 <Card.Root class="w-[350px] dark">
