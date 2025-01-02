@@ -37,13 +37,6 @@
 
         selectedTechnologies = Array.from(uniqueTechnologies.values());
     }
-
-    const typewriterText = [
-        "Programmer",
-        "Business IT Student",
-        "I have completed Projects using",
-    ];
-
     function toggleCursor() {
         cursorInterval = setInterval(() => {
             cursorVisible = !cursorVisible;
@@ -53,7 +46,7 @@
     async function typewriterEffect() {
         toggleCursor();
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        for (let word of typewriterText) {
+        for (let word of data.introText) {
             for (let i = 0; i < word.length; i++) {
                 clearInterval(cursorInterval);
                 cursorVisible = true;
@@ -62,7 +55,7 @@
             }
             toggleCursor();
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            if (word !== typewriterText[typewriterText.length - 1]) {
+            if (word !== data.introText[data.introText.length - 1]) {
                 for (let i = word.length; i > 0; i--) {
                     clearInterval(cursorInterval);
                     cursorVisible = true;
@@ -84,6 +77,7 @@
             introPlayed.set(true);
         } else {
             showCanvas = true;
+            displayedText = data.introText[data.introText.length - 1];
         }
     });
 </script>

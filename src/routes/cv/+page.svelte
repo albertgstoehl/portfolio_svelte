@@ -8,7 +8,7 @@
 		class="max-w-2xl w-full rounded-lg shadow-xl p-8 text-center border"
 	>
 		<h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-			Download My Lebenslauf
+			Download My CV
 		</h1>
 
 		<p class="text-gray-600 dark:text-gray-300 mb-8">
