@@ -33,8 +33,9 @@
     />
 </T.PerspectiveCamera>
 
-<T.AmbientLight intensity={0.2} />
+<T.AmbientLight intensity={0.5} />
 <T.DirectionalLight intensity={2} position={[5, 5, 5]} />
+<T.DirectionalLight intensity={2} position={[5, -3, -20]} />
 
 <!-- Add the Laptop Model with selected icons -->
 <T.Group position={[0, groupYPosition, 0]} scale={5}>

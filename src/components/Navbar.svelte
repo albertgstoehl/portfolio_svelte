@@ -19,7 +19,7 @@
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
-    isVisible = currentScrollY < lastScrollY || currentScrollY === 0;
+    isVisible = currentScrollY === 0;
     lastScrollY = currentScrollY;
   };
 
