@@ -3,7 +3,6 @@
     import SceneOne from "$lib/SceneOne.svelte";
     import { introPlayed } from "../stores/introStore";
     import { Button } from "$lib/components/ui/button";
-    import { ArrowDown } from "lucide-svelte";
     import { onMount } from 'svelte';
 
     export let data;
