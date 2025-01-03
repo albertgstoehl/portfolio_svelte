@@ -3,18 +3,25 @@ import { MongoClient } from 'mongodb';
 const uri = process.env.MONGODB_URI; // Loaded from environment
 const dbName = process.env.MONGODB_DBNAME;
 
-let client;
-let db;
+let clientPromise = null; // Promise to track MongoDB client initialization
+let db = null; // Database instance
 
 /**
  * Initialize MongoDB Connection
  */
 export async function connectToDatabase() {
-  if (!client) {
-    client = new MongoClient(uri, {});
-    await client.connect();
-    db = client.db(dbName);
+  if (!clientPromise) {
+    clientPromise = (async () => {
+      const client = new MongoClient(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      await client.connect();
+      db = client.db(dbName);
+      return client;
+    })();
   }
+  await clientPromise; // Ensure client is initialized
   return db;
 }
 
@@ -22,7 +29,9 @@ export async function connectToDatabase() {
  * Get Projects
  */
 export async function getProjects() {
-  const db = await connectToDatabase();
+  if (!db) {
+    await connectToDatabase(); // Ensure DB is connected
+  }
   const projects = await db.collection('projects').find({}).toArray();
   return projects;
 }
@@ -31,7 +40,9 @@ export async function getProjects() {
  * Get Ordered Intro Data
  */
 export async function getIntroData() {
-  const db = await connectToDatabase();
+  if (!db) {
+    await connectToDatabase(); // Ensure DB is connected
+  }
   const intro = await db
     .collection('intro')
     .find({})

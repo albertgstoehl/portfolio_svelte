@@ -16,6 +16,10 @@ services:
       - MONGODB_DBNAME=${MONGODB_DBNAME}
       - CV_LATEX_REPO_URL=${CV_LATEX_REPO_URL}
       - CV_LATEX_REPO_TOKEN=${CV_LATEX_REPO_TOKEN}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - AUTH_SECRET=${AUTH_SECRET}
+      - ADMIN_USER_ID=${ADMIN_USER_ID}
     command: ["node", "/app/node_modules/vite/bin/vite.js", "--host", "0.0.0.0"]
     env_file:
       - ../.env
