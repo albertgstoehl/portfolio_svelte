@@ -31,5 +31,5 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
             return token;
         },
     },
-
+    trustedHosts: ["ags-portfolio.netlify.app", "localhost"], // Add your trusted hosts here
 });
