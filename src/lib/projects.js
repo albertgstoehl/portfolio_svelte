@@ -1,7 +1,7 @@
+import { getProjects } from '$lib/db';
 import { projectsStore } from '../stores/projectStore';
-import { getProjects } from './db';
 
-export async function fetchProjects() {
+export async function fetchProjects(needsUpdate) {
   let projects;
 
   // Subscribe to the store to check its current value
@@ -9,7 +9,7 @@ export async function fetchProjects() {
     projects = value;
   });
 
-  if (projects !== null) {
+  if (projects !== null && !needsUpdate) {
     // If the store already has data, return it
     unsubscribe();
     return projects;
