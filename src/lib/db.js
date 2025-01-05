@@ -13,10 +13,7 @@ export async function connectToDatabase() {
   if (!clientPromise) {
     clientPromise = (async () => {
       try {
-        const client = new MongoClient(uri, {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-        });
+        const client = new MongoClient(uri);
         await client.connect();
         db = client.db(dbName);
         return client;
