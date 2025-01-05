@@ -1,5 +1,15 @@
 import { SvelteKitAuth } from '@auth/sveltekit';
 import GitHub from '@auth/sveltekit/providers/github';
+import { Auth } from "@auth/core";
+
+const authOptions = {
+  trustHost: true, // Trust all hosts (useful for testing)
+  trustedHosts: ["ags-portfolio.netlify.app", "localhost"], // List of trusted hosts
+};
+
+export const auth = Auth(authOptions);
+
+
 
 const ADMIN_USER_ID = parseInt(process.env.ADMIN_USER_ID, 10);  // Store admin ID in your environment variables as an integer
 
