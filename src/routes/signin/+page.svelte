@@ -3,12 +3,30 @@
     import { Button } from "$lib/components/ui/button";
     import { SignOut } from "@auth/sveltekit/components";
     import { Github } from "lucide-svelte";
+    import { modalState } from "../../stores/modalStore.js";
 
-    export let data
+    export let data;
 
     const loginWithGitHub = () => {
         signIn("github");
     };
+
+    // Show appropriate modal messages based on session and admin status
+    $: {
+        if (data?.loginAttempted && data?.isAdmin) {
+            modalState.set({
+                showModal: true,
+                message: "Login successful! You are now an admin.",
+                type: "success",
+            });
+        } else if (data?.loginAttempted && !data?.isAdmin) {
+            modalState.set({
+                showModal: true,
+                message: "You are logged in, but you are not authorized for admin functionality.",
+                type: "error",
+            });
+        }
+    }
 </script>
 
 <div class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -18,14 +36,13 @@
         </h1>
 
         {#if !data.isAdmin}
-            <div
-                class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
-                role="alert"
-            >
-                You are not authorized to access the admin area.
-            </div>
             <p class="text-gray-600 dark:text-gray-300 mb-6">
                 Log in via GitHub to manage projects and content.
+            </p>
+
+            <!-- Admin access demo instructions -->
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                For admin access to the demo, please click the login button below. Your session will be authorized for prototype purposes.
             </p>
             
             <Button on:click={loginWithGitHub} class="w-full" variant="default">

@@ -1,4 +1,4 @@
-import { fetchProjects } from '$lib/fetchProjects';
+import { fetchProjects } from '$lib/projects';
 import { getIntroData } from '$lib/db';
 
 export async function load() {

@@ -24,7 +24,6 @@
 
   const adminLinks = [
     { name: "Dashboard", href: "/admin" },
-    { name: "Manage Projects", href: "/admin/projects" }
   ];
 
   const handleScroll = () => {
@@ -57,7 +56,7 @@
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <img src="/favicon.png" alt="Albert Gstöhl" class="w-8 h-8" />
       <span class="self-center text-2xl font-semibold whitespace-nowrap">
-        Albert Gstöhl
+        Portfolio
       </span>
     </a>
 

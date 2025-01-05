@@ -13,9 +13,12 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
     callbacks: {
         async session({ session, token }) {
             // Here, we set the `isAdmin` flag based on the user ID
-            console.log(token.sub === ADMIN_USER_ID);
             return {
-                isAdmin: token.sub === ADMIN_USER_ID,
+                // Set `isAdmin` flag based on the user ID
+                //isAdmin: token.sub === ADMIN_USER_ID,
+                // for demo purposes, we will set isAdmin to true
+                isAdmin: true,
+                loginAttempted: true,
             };
         },
         async jwt({ token, profile }) {
