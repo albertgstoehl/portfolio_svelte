@@ -1,5 +1,6 @@
-
 # Portfolio Application
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e2e3dbc8-822e-4756-9634-9ae0db3e4105/deploy-status)](https://app.netlify.com/sites/ags-portfolio/deploys)
 
 This project is a personal portfolio web application designed to showcase projects, provide a downloadable CV, and allow visitors to send messages via a contact form. It features an admin dashboard for managing projects and uses advanced technologies like SvelteKit, MongoDB, and GitHub OAuth.
 
@@ -34,11 +35,3 @@ The project requires the following `.env` file configuration for proper function
 | `GITHUB_CLIENT_SECRET` | Client secret for GitHub OAuth authentication.                               |
 | `AUTH_SECRET`          | Secret key used for authentication and session management.                   |
 | `ADMIN_USER_ID`        | GitHub user ID of the admin account (used for admin privilege verification). |
-
-### **Setup**
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/<your-username>/portfolio-app.git
-   cd portfolio-app
-   ```
