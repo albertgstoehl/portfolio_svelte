@@ -34,6 +34,7 @@
     let selectedFile = null;
 
     function addTag() {
+        // Add the current tag to the project tags if it's not already there
         if (currentTag && !project.tags.includes(currentTag)) {
             project.tags = [...project.tags, currentTag];
             currentTag = "";
@@ -41,10 +42,12 @@
     }
 
     function removeTag(tag) {
+        // Remove the tag from the project tags via filtering all tags except the one to remove
         project.tags = project.tags.filter((t) => t !== tag);
     }
 
     function addTechnology() {
+        // Add the current technology to the project technologies if it's not already there
         if (
             currentTech.name &&
             currentTech.icon &&
@@ -56,19 +59,23 @@
     }
 
     function removeTechnology(techName) {
+        // Remove the technology from the project technologies via filtering all technologies except the one to remove
         project.technologies = project.technologies.filter((t) => t.name !== techName);
     }
 
     function handleFileChange(event) {
+        // Get the first selected file from the input
         selectedFile = event.target.files[0];
         console.log("Selected file:", selectedFile);
     }
 
     async function handleSubmit(event) {
+        // Prevent the default form submission
         event.preventDefault();
 
         const formData = new FormData(event.target);
 
+        // Append the selected file to the form data if it exists
         if (selectedFile) {
             formData.set("image", selectedFile);
         }
@@ -82,9 +89,12 @@
             const result = await response.json();
             console.log("Form submission result:", result);
 
+
+            // Extract the message and redirect URL from the response
+            // The response is expected to be in the format: 
+            // '[{"message":1,"redirectUrl":2},"Message!","/redirect"]'
             const message = JSON.parse(result.data)[JSON.parse(result.data)[0].message];
             const redirectUrl = JSON.parse(result.data)[JSON.parse(result.data)[0].redirectUrl];
-            console.log("message:", redirectUrl);
 
             // Reset modal state before showing new one
             modalState.set({ showModal: false, message: "", type: "info" });

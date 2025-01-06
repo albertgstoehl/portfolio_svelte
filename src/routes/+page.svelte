@@ -1,6 +1,6 @@
 <script>
     import { Canvas } from "@threlte/core";
-    import SceneOne from "$lib/SceneOne.svelte";
+    import SceneOne from "$lib/LaptopScene.svelte";
     import { introPlayed } from "../stores/introStore";
     import { Button } from "$lib/components/ui/button";
     import { onMount } from "svelte";
@@ -17,10 +17,7 @@
         intro = value;
     });
 
-    onMount(() => {
-        unsubscribe();
-    });
-
+    // Extract unique technologies from projects for Laptop Icon Mesh
     if (data?.projects && data.projects.length > 0) {
         const allTechnologies = data.projects.flatMap((project) =>
             project.technologies.map((tech) => ({
@@ -36,37 +33,25 @@
 
         selectedTechnologies = Array.from(uniqueTechnologies.values());
     }
-    function toggleCursor() {
-        cursorInterval = setInterval(() => {
-            cursorVisible = !cursorVisible;
-        }, 500);
-    }
 
+    // function to simulate typing effect
     async function typewriterEffect() {
-        toggleCursor();
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         for (let word of data.introText) {
             for (let i = 0; i < word.length; i++) {
-                clearInterval(cursorInterval);
                 cursorVisible = true;
                 displayedText = word.slice(0, i + 1);
                 await new Promise((resolve) => setTimeout(resolve, 50));
             }
-            toggleCursor();
             await new Promise((resolve) => setTimeout(resolve, 1000));
             if (word !== data.introText[data.introText.length - 1]) {
                 for (let i = word.length; i > 0; i--) {
-                    clearInterval(cursorInterval);
                     cursorVisible = true;
                     displayedText = word.slice(0, i - 1);
                     await new Promise((resolve) => setTimeout(resolve, 50));
                 }
-                toggleCursor();
-            } else {
-                clearInterval(cursorInterval);
-                cursorVisible = false;
             }
         }
+        cursorVisible = false;
         showCanvas = true;
     }
 
@@ -83,11 +68,11 @@
 
 <section class="p-5 min-h-screen flex flex-col">
     <div class="text-center mb-5 animate-fade-up animate-once">
-        <!-- Fancy "Hello, I'm Albert" -->
+        <!-- Main heading -->
         <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-yellow-200 via-red-500 to-fuchsia-500 text-transparent bg-clip-text animate-gradient">
             Hello, I'm Albert
         </h1>
-        <!-- Modern and animated text for the intro -->
+        <!-- Typewriter Placeholder -->
         <p class="text-2xl md:text-3xl font-light">
             <i class="inline-block px-4 py-2 rounded-lg shadow-lg text-white animate-bounce">
                 {displayedText}<span class="animate-blink">{cursorVisible ? "|" : " "}</span>
@@ -98,6 +83,7 @@
     {#if showCanvas}
         <div class="canvas-wrapper h-screen animate-fade-up animate-once">
             <Canvas>
+                <!-- Laptop scene unique icons are given as parameter -->
                 <SceneOne {selectedTechnologies} />
             </Canvas>
         </div>

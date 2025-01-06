@@ -9,9 +9,10 @@
     export let data;
 
     // Reactive filter and filtered projects
-    let currentFilter = data.technology_filter || null;
+    let currentFilter;
     let filteredProjects = data.projects;
 
+    // Filter projects based on technology
     $: filteredProjects = currentFilter
         ? data.projects.filter((project) =>
               project.technologies.some((tech) => tech.name === currentFilter),
@@ -27,7 +28,7 @@
 
         updateFilterFromUrl();
 
-        // Listen to history changes
+        // Listen to history changes to make sure the filter is right
         window.addEventListener("popstate", updateFilterFromUrl);
 
         return () =>
@@ -95,6 +96,7 @@
                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center"
             >
                 {#each filteredProjects as project}
+                    <!-- Project card with filterChange handler-->
                     <ProjectCard
                         imageUrl={project.image}
                         title={project.title}

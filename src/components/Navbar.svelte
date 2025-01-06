@@ -11,10 +11,10 @@
   // Reactive state variables
   const state = $state({
     isVisible: true,
-    lastScrollY: 0,
-    isOpen: false,
+    isOpen: false, // Mobile menu state
   });
 
+  // Default navigation links
   const navLinks = [
     { name: "About", href: "/" },
     { name: "Projects", href: "/projects" },
@@ -22,22 +22,25 @@
     { name: "Contact", href: "/contact" },
   ];
 
+  // Admin navigation links
   const adminLinks = [
     { name: "Dashboard", href: "/admin" },
   ];
 
+  // Handle scroll events to show/hide the navbar
+  // TODO: This is a simple implementation and can be improved
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
-    state.isVisible = currentScrollY === 0;
-    state.lastScrollY = currentScrollY;
+    state.isVisible = currentScrollY === 0; // Show the navbar when at the top
   };
 
+  // Listen to scroll events
   onMount(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   });
 
-  // Automatically close the menu when the path changes
+  // Automatically close the mobile menu when the path changes
   $effect(() => {
     const unsubscribe = page.subscribe(({ url }) => {
       if (url.pathname) {

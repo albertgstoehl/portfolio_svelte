@@ -8,6 +8,8 @@ let db = null; // Database instance
 
 /**
  * Initialize MongoDB Connection
+ * @returns {Promise<Db>} The connected MongoDB database instance.
+ * @throws {Error} If the connection fails.
  */
 export async function connectToDatabase() {
   if (!clientPromise) {
@@ -29,6 +31,8 @@ export async function connectToDatabase() {
 
 /**
  * Get Projects
+ * @returns {Promise<Array>} A list of all projects in the database.
+ * @throws {Error} If fetching projects fails.
  */
 export async function getProjects() {
   try {
@@ -45,6 +49,8 @@ export async function getProjects() {
 
 /**
  * Get Ordered Intro Data
+ * @returns {Promise<Array<string>>} A sorted list of intro text strings.
+ * @throws {Error} If fetching intro data fails.
  */
 export async function getIntroData() {
   try {
@@ -65,6 +71,9 @@ export async function getIntroData() {
 
 /**
  * Find a Project by Slug
+ * @param {string} slug - The slug of the project to find.
+ * @returns {Promise<Object|null>} The project data, or null if not found.
+ * @throws {Error} If the project lookup fails.
  */
 export async function findProject(slug) {
   try {
@@ -81,6 +90,10 @@ export async function findProject(slug) {
 
 /**
  * Edit a Project
+ * @param {string} _id - The ID of the project to edit.
+ * @param {Object} updatedData - The updated project data.
+ * @returns {Promise<Object>} The result of the update operation.
+ * @throws {Error} If the project update fails.
  */
 export async function editProject(_id, updatedData) {
   try {
@@ -88,7 +101,6 @@ export async function editProject(_id, updatedData) {
       await connectToDatabase(); // Ensure DB is connected
     }
     const objectId = new ObjectId(_id); // Convert the string _id to ObjectId
-    console.log('objectId:', objectId);
     const result = await db.collection('projects').updateOne(
       { _id: objectId }, // Use the ObjectId in the query
       { $set: updatedData } // Set the updated data
@@ -102,6 +114,9 @@ export async function editProject(_id, updatedData) {
 
 /**
  * Delete a Project
+ * @param {string} id - The ID of the project to delete.
+ * @returns {Promise<Object>} The result of the delete operation.
+ * @throws {Error} If the project deletion fails.
  */
 export async function deleteProject(id) {
   try {
@@ -111,13 +126,16 @@ export async function deleteProject(id) {
     const result = await db.collection('projects').deleteOne({ _id: new ObjectId(id) });
     return result;
   } catch (error) {
-    console.error(`Error deleting project with slug "${slug}":`, error);
+    console.error(`Error deleting project with id "${id}":`, error);
     throw new Error("Failed to delete the project.");
   }
 }
 
 /**
  * Add a New Project
+ * @param {Object} projectData - The data of the new project to add.
+ * @returns {Promise<Object>} The result of the insert operation.
+ * @throws {Error} If adding the project fails.
  */
 export async function addProject(projectData) {
   try {
@@ -131,5 +149,3 @@ export async function addProject(projectData) {
     throw new Error("Failed to add the new project.");
   }
 }
-
-

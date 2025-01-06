@@ -21,7 +21,7 @@ export const actions = {
     const projectId = formData.get('projectId');
     const updatedData = extractProjectData(formData);
 
-    // Handle image processing if present
+    // Handle image processing if file present
     if (updatedData.image && updatedData.image.size > 0) {
       try {
         updatedData.image = await convertToBase64Image(updatedData.image);
@@ -36,6 +36,8 @@ export const actions = {
 
     try {
       const result = await editProject(projectId, updatedData);
+
+      // Fetch projects again from the database (flagging cache as stale)
       await fetchProjects(true);
 
       if (result.modifiedCount === 0) {
@@ -43,18 +45,11 @@ export const actions = {
       }
 
       return {
-        success: true,
         redirectUrl: `/projects/${updatedData.slug}`,
         message: 'Project updated successfully!',
       };
     } catch (error) {
       console.error('Error updating project:', error);
-
-      modalState.set({
-        showModal: true,
-        message: 'Failed to update the project.',
-        type: 'error',
-      });
 
       return fail(500, { message: 'Failed to update project.' });
     }

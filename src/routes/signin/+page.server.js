@@ -4,7 +4,7 @@ import { signOut, signIn } from '../../auth'; // Adjust the path to your auth se
 export const actions = { default: signIn }
 
 export const load = async ({ parent, locals }) => {
-    // Get data from the parent layout
+    // Get data from the parent layout.server.js
     const {isAdmin,loginAttempted} = await parent();
 
     return {isAdmin, loginAttempted};

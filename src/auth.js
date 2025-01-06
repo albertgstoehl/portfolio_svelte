@@ -3,7 +3,7 @@ import GitHub from '@auth/sveltekit/providers/github';
 import { Auth } from "@auth/core";
 
 
-const ADMIN_USER_ID = parseInt(process.env.ADMIN_USER_ID, 10);  // Store admin ID in your environment variables as an integer
+const ADMIN_USER_ID = parseInt(process.env.ADMIN_USER_ID, 10); // Parse the admin user ID from the environment variable
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
     providers: [
@@ -14,11 +14,9 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
     ],
     callbacks: {
         async session({ session, token }) {
-            // Here, we set the `isAdmin` flag based on the user ID
             return {
-                // Set `isAdmin` flag based on the user ID
-                //isAdmin: token.sub === ADMIN_USER_ID,
-                // for demo purposes, we will set isAdmin to true
+                // for demo purposes, we will set isAdmin to true so everybody can access the admin page
+                // TODO: change this to check if the user is an admin
                 isAdmin: true,
                 loginAttempted: true,
             };
@@ -31,7 +29,6 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
             return token;
         },
     },
-    trustedHosts: ["ags-portfolio.netlify.app", "localhost"], // Add your trusted hosts here
-    trustHost: true,
-    debug: true,
+    trustedHosts: ["ags-portfolio.netlify.app", "localhost"],
+    trustHost: true
 });

@@ -6,6 +6,7 @@ const limiter = new RateLimiter({
     IPUA: [5, 'm'], // Allow up to 5 requests per minute per IP and User-Agent
 });
 
+// GET /api/download-cv
 export async function GET(event) {
     const apiUrl = process.env.CV_LATEX_REPO_URL;
     const repoToken = process.env.CV_LATEX_REPO_TOKEN;
@@ -18,7 +19,7 @@ export async function GET(event) {
     }
 
     try {
-        // Fetch the latest release information
+        // Fetch the latest release information via token
         const response = await fetch(apiUrl, {
             headers: {
                 'Authorization': `token ${repoToken}`,
@@ -29,9 +30,10 @@ export async function GET(event) {
             throw new Error(`Failed to fetch release: ${response.statusText}`);
         }
 
+        // Parse the release information and find the right asset via name
         const data = await response.json();
         const releaseAsset = data.assets.find(
-            (asset) => asset.name === 'Gstoehl_Albert_CV.pdf'
+            (asset) => asset.name === 'Gstoehl_Albert_CV_redacted.pdf'
         );
 
         if (!releaseAsset) {

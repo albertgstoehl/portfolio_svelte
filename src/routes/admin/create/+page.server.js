@@ -24,7 +24,7 @@ export const actions = {
       const result = await addProject(newProject);
 
       if (result.insertedId) {
-        // Fetch updated projects
+        // Fetch projects again from the database (flagging cache as stale)
         await fetchProjects(true);
 
         // Return success response

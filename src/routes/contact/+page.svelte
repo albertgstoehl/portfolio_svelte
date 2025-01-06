@@ -33,6 +33,7 @@
             </p>
         </div>
     {:else}
+        <!-- Form to submit contact message via Netlify attribute -->
         <form
             name="contact"
             method="POST"

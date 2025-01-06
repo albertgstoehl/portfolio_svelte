@@ -1,12 +1,13 @@
 <script>
     import { T } from '@threlte/core';
     import { OrbitControls } from '@threlte/extras';
-    import Laptop from '../components/laptop_materia.svelte';
+    import Laptop from '../components/Laptop.svelte';
 
     export let selectedTechnologies = []; // Icons passed from +page.svelte
 
     let isMobile = window.innerWidth <= 768;
 
+    // Adjust camera and zoom based on window size (Responsive)
     $: cameraZ = isMobile ? 15 : 8;
     $: enableZoom = !isMobile;
     $: groupYPosition = isMobile ? 4.5 : 1.5;

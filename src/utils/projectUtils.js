@@ -1,3 +1,8 @@
+  /**
+ * Extract project data from form data.
+ * @param {FormData} formData - The form data containing project details
+ * @returns {Object} Extracted project data
+ */
 export function extractProjectData(formData) {
     const title = formData.get('title');
     const slug = title.toLowerCase().replace(/\s+/g, '-');

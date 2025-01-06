@@ -1,6 +1,11 @@
 import { getProjects } from '$lib/db';
 import { projectsStore } from '../stores/projectStore';
 
+/**
+ * Fetch projects from the database or cache.
+ * @param {boolean} needsUpdate - Flag to determine if the cache should be bypassed
+ * @returns {Promise<Array>} List of projects
+ */
 export async function fetchProjects(needsUpdate) {
   let projects;
 

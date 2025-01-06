@@ -3,32 +3,25 @@
     import { modalState } from "../stores/modalStore";
     import * as Dialog from "$lib/components/ui/dialog";
     import { Button } from "$lib/components/ui/button";
-    import { onMount } from "svelte";
 
     let timeout: number;
 
+    // Reactive modal state from the store
     $: {
         $modalState;
         const { showModal } = $modalState;
 
         if (showModal) {
+            // Close the modal after 3 seconds
             clearTimeout(timeout);
             timeout = setTimeout(() => {
-                modalState.set({
-                    showModal: false,
-                    message: '',
-                    type: 'info'
-                });
+                closeModal();
             }, 3000);
         }
     }
 
     onDestroy(() => {
-        modalState.set({
-            showModal: false,
-            message: "",
-            type: "info",
-        });
+        closeModal();
         clearTimeout(timeout);
     });
 
@@ -40,6 +33,7 @@
         });
     }
 
+    // Return the appropriate icon based on the modal type
     function getIcon(type: string) {
         switch (type) {
             case "success":

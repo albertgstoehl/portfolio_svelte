@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import { Button } from "$lib/components/ui/button";
 	import { FileDown } from "lucide-svelte";
 </script>
@@ -13,7 +13,7 @@
 
 		<p class="text-gray-600 dark:text-gray-300 mb-8">
 			Get the latest version of my CV to learn more about my skills,
-			experience, and qualifications.
+			experience, and qualifications. For privacy reasons, I have redacted sensitive information from the public version.
 		</p>
 
 		<a

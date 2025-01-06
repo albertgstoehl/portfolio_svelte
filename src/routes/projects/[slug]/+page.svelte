@@ -1,11 +1,11 @@
-<script lang="ts">
-    export let data;
-    let project = data.project;
-
+<script>
     import { Button } from "$lib/components/ui/button";
     import * as Card from "$lib/components/ui/card";
     import { Badge } from "$lib/components/ui/badge";
     import { Calendar, Github, ExternalLink } from 'lucide-svelte';
+
+    export let data;
+    let project = data.project;
   </script>
   
   <svelte:head>

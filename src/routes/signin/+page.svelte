@@ -7,6 +7,7 @@
 
     export let data;
 
+    // Login with GitHub
     const loginWithGitHub = () => {
         signIn("github");
     };
@@ -34,13 +35,11 @@
         <h1 class="text-3xl font-bold mb-4 text-gray-800 dark:text-white">
             Admin Login
         </h1>
-
         {#if !data.isAdmin}
             <p class="text-gray-600 dark:text-gray-300 mb-6">
                 Log in via GitHub to manage projects and content.
             </p>
 
-            <!-- Admin access demo instructions -->
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
                 For admin access to the demo, please click the login button below. Your session will be authorized for prototype purposes.
             </p>
