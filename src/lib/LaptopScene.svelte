@@ -1,14 +1,21 @@
 <script>
     import { T } from '@threlte/core';
     import { OrbitControls } from '@threlte/extras';
-    import Laptop from '../components/laptop_materia.svelte';
+    import Laptop from '../components/Laptop.svelte';
 
     export let selectedTechnologies = []; // Icons passed from +page.svelte
 
     let isMobile = window.innerWidth <= 768;
 
+    // Adjust camera and zoom based on window size (Responsive)
     $: cameraZ = isMobile ? 15 : 8;
     $: enableZoom = !isMobile;
+    $: groupYPosition = isMobile ? 4.5 : 1.5;
+
+    // Optional: Add a listener for window resize to dynamically adjust isMobile
+    window.addEventListener('resize', () => {
+        isMobile = window.innerWidth <= 768;
+    });
 </script>
 
 <T.PerspectiveCamera
@@ -27,11 +34,11 @@
     />
 </T.PerspectiveCamera>
 
-<T.AmbientLight intensity={0.2} />
+<T.AmbientLight intensity={0.5} />
 <T.DirectionalLight intensity={2} position={[5, 5, 5]} />
+<T.DirectionalLight intensity={2} position={[5, -3, -20]} />
 
 <!-- Add the Laptop Model with selected icons -->
-<T.Group position={[0, 0, 0]} scale={5}>
-    <T.AxesHelper args={[5]} />
+<T.Group position={[0, groupYPosition, 0]} scale={5}>
     <Laptop castShadow receiveShadow technologies={selectedTechnologies} />
 </T.Group>

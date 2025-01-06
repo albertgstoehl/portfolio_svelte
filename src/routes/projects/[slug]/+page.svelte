@@ -1,11 +1,11 @@
-<script lang="ts">
-    export let data;
-    let project = data.project;
-
+<script>
     import { Button } from "$lib/components/ui/button";
     import * as Card from "$lib/components/ui/card";
     import { Badge } from "$lib/components/ui/badge";
     import { Calendar, Github, ExternalLink } from 'lucide-svelte';
+
+    export let data;
+    let project = data.project;
   </script>
   
   <svelte:head>
@@ -43,7 +43,10 @@
         <h2 class="text-2xl font-semibold mb-3">Technologies Used</h2>
         <div class="flex flex-wrap gap-2 mb-6">
           {#each project.technologies as tech}
-            <Badge variant="outline" class="text-blue-400 border-blue-400">{tech.name}</Badge>
+            <a href={`/projects/?technology=${encodeURIComponent(tech.name)}`}
+                      rel="external">
+              <Badge variant="outline" class="text-blue-400 border-blue-400">{tech.name}</Badge>
+            </a>
           {/each}
         </div>
   

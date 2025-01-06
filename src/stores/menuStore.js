@@ -1,4 +1,4 @@
-// src/stores/menuStore.js
+// this store is used to manage the mobile menu open state and height
 import { writable } from 'svelte/store';
 
 export const isMenuOpen = writable(false);

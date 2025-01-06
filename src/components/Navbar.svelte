@@ -4,44 +4,62 @@
   import { Button } from "$lib/components/ui/button";
   import * as Sheet from "$lib/components/ui/sheet";
   import { Menu } from "lucide-svelte";
+  import { SignOut } from "@auth/sveltekit/components";
 
-  let isVisible = true;
-  let lastScrollY = 0;
-  let isOpen = false;
+  const { isAdmin } = $props();
 
+  // Reactive state variables
+  const state = $state({
+    isVisible: true,
+    isOpen: false, // Mobile menu state
+  });
+
+  // Default navigation links
   const navLinks = [
     { name: "About", href: "/" },
     { name: "Projects", href: "/projects" },
-    { name: "Experience", href: "/experience" },
     { name: "CV", href: "/cv" },
     { name: "Contact", href: "/contact" },
   ];
 
+  // Admin navigation links
+  const adminLinks = [
+    { name: "Dashboard", href: "/admin" },
+  ];
+
+  // Handle scroll events to show/hide the navbar
+  // TODO: This is a simple implementation and can be improved
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
-    isVisible = currentScrollY < lastScrollY || currentScrollY === 0;
-    lastScrollY = currentScrollY;
+    state.isVisible = currentScrollY === 0; // Show the navbar when at the top
   };
 
+  // Listen to scroll events
   onMount(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   });
 
-  $: if ($page.url.pathname) {
-    isOpen = false;
-  }
+  // Automatically close the mobile menu when the path changes
+  $effect(() => {
+    const unsubscribe = page.subscribe(({ url }) => {
+      if (url.pathname) {
+        state.isOpen = false; // Close the menu
+      }
+    });
+    return () => unsubscribe(); // Cleanup the subscription
+  });
 </script>
 
 <nav
   class="fixed top-0 left-0 w-full h-16 dark z-50 transition-transform duration-300"
-  style:transform={isVisible ? "translateY(0)" : "translateY(-100%)"}
+  style:transform={state.isVisible ? "translateY(0)" : "translateY(-100%)"}
 >
   <div class="container mx-auto px-4 py-4 flex justify-between items-center">
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <img src="/favicon.png" alt="Albert Gstöhl" class="w-8 h-8" />
       <span class="self-center text-2xl font-semibold whitespace-nowrap">
-        Albert Gstöhl
+        Portfolio
       </span>
     </a>
 
@@ -57,6 +75,32 @@
           </a>
         </li>
       {/each}
+      {#if isAdmin}
+        {#each adminLinks as link}
+          <li>
+            <a
+              href={link.href}
+              class="text-sm font-medium transition-colors hover:text-primary"
+            >
+              {link.name}
+            </a>
+          </li>
+        {/each}
+        <li>
+          <SignOut>
+            <span class="text-sm font-medium transition-colors hover:text-primary" slot="submitButton">Logout</span>
+          </SignOut>
+        </li>
+      {:else}
+        <li>
+          <a
+            href="/signin"
+            class="text-sm font-medium transition-colors hover:text-primary"
+          >
+            Login
+          </a>
+        </li>
+      {/if}
     </ul>
 
     <!-- Mobile Menu Toggle -->
@@ -64,7 +108,7 @@
       variant="ghost"
       size="icon"
       class="md:hidden"
-      on:click={() => (isOpen = true)}
+      on:click={() => (state.isOpen = true)}
     >
       <Menu class="h-6 w-6" />
       <span class="sr-only">Toggle menu</span>
@@ -73,7 +117,7 @@
 </nav>
 
 <!-- Mobile Navigation Sheet -->
-<Sheet.Root bind:open={isOpen} side="left">
+<Sheet.Root bind:open={state.isOpen}>
   <Sheet.Content>
     <nav class="grid gap-4 py-4">
       {#each navLinks as link}
@@ -84,6 +128,26 @@
           {link.name}
         </a>
       {/each}
+      {#if isAdmin}
+        {#each adminLinks as link}
+          <a
+            href={link.href}
+            class="block px-2 py-1 text-lg font-medium hover:underline"
+          >
+            {link.name}
+          </a>
+        {/each}
+        <SignOut>
+          <span class="block px-2 py-1 text-lg font-medium hover:underline" slot="submitButton">Logout</span>
+        </SignOut>
+      {:else}
+        <a
+          href="/signin"
+          class="block px-2 py-1 text-lg font-medium hover:underline"
+        >
+          Login
+        </a>
+      {/if}
     </nav>
   </Sheet.Content>
 </Sheet.Root>
