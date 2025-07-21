@@ -12,7 +12,7 @@
     let statusMessage = "";
 
     // Get your free access key from https://web3forms.com/
-    const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE";
+    const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
     async function handleSubmit(event: Event) {
         event.preventDefault();
