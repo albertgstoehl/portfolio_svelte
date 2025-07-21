@@ -8,11 +8,36 @@
     let email = "";
     let message = "";
     let submitted = false;
+    let isSubmitting = false;
 
-    function handleSubmit() {
-        // This is just to simulate form submission
-        // Netlify will handle the actual form submission
-        submitted = true;
+    async function handleSubmit(event) {
+        event.preventDefault();
+        isSubmitting = true;
+
+        const formData = new FormData(event.target);
+        
+        try {
+            const response = await fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(formData).toString()
+            });
+
+            if (response.ok) {
+                submitted = true;
+                // Reset form
+                name = "";
+                email = "";
+                message = "";
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('There was an error submitting the form. Please try again.');
+        } finally {
+            isSubmitting = false;
+        }
     }
 </script>
 
@@ -33,15 +58,30 @@
             </p>
         </div>
     {:else}
-        <!-- Form to submit contact message via Netlify attribute -->
+        <!-- Hidden form for Netlify bot detection -->
+        <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+            <input type="text" name="name" />
+            <input type="email" name="email" />
+            <textarea name="message"></textarea>
+        </form>
+
+        <!-- Actual form -->
         <form
             name="contact"
             method="POST"
-            netlify
-            on:submit|preventDefault={handleSubmit}
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            on:submit={handleSubmit}
             class="space-y-4"
         >
+            <!-- Hidden fields for Netlify -->
             <input type="hidden" name="form-name" value="contact" />
+            <div style="display: none;">
+                <label>
+                    Don't fill this out if you're human: 
+                    <input name="bot-field" />
+                </label>
+            </div>
 
             <div>
                 <label
@@ -56,6 +96,7 @@
                     bind:value={name}
                     placeholder="Your Name"
                     required
+                    disabled={isSubmitting}
                 />
             </div>
 
@@ -72,6 +113,7 @@
                     bind:value={email}
                     placeholder="your.email@example.com"
                     required
+                    disabled={isSubmitting}
                 />
             </div>
 
@@ -88,12 +130,18 @@
                     placeholder="Your message here..."
                     required
                     class="min-h-[150px]"
+                    disabled={isSubmitting}
                 />
             </div>
 
-            <Button type="submit" class="w-full">
-                <Send class="mr-2 h-4 w-4" />
-                Send Message
+            <Button type="submit" class="w-full" disabled={isSubmitting}>
+                {#if isSubmitting}
+                    <div class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent"></div>
+                    Sending...
+                {:else}
+                    <Send class="mr-2 h-4 w-4" />
+                    Send Message
+                {/if}
             </Button>
         </form>
     {/if}
