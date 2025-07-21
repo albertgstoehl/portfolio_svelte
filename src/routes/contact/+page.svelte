@@ -7,6 +7,13 @@
     let name = "";
     let email = "";
     let message = "";
+    let submitted = false;
+
+    function handleSubmit() {
+        // This function will be called after Netlify processes the form
+        // We can show a thank you message here
+        submitted = true;
+    }
 </script>
 
 <div class="max-w-xl mx-auto mt-10 p-6 rounded-lg shadow-md border">
@@ -14,84 +21,106 @@
         Contact Me
     </h2>
 
-    <!-- Hidden form for Netlify bot detection -->
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
-        <input type="text" name="name" />
-        <input type="email" name="email" />
-        <textarea name="message"></textarea>
-    </form>
-
-    <!-- Actual form -->
-    <form
-        name="contact"
-        method="POST"
-        data-netlify="true"
-        data-netlify-honeypot="bot-field"
-        action="/contact/success"
-        class="space-y-4"
-    >
-        <!-- Hidden fields for Netlify -->
-        <input type="hidden" name="form-name" value="contact" />
-        <div style="display: none;">
-            <label>
-                Don't fill this out if you're human: 
-                <input name="bot-field" />
-            </label>
+    {#if submitted}
+        <div
+            class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6"
+            role="alert"
+        >
+            <p class="font-bold">Thank you!</p>
+            <p>
+                Your message has been sent successfully. I'll get back to you
+                soon.
+            </p>
         </div>
+    {:else}
+        <!-- 
+        NETLIFY'S RECOMMENDED APPROACH:
+        1. Static HTML form with data-netlify="true"
+        2. Hidden form for bot detection during build
+        3. No action attribute - submits to same page
+        4. Netlify handles submission and shows default success page
+        -->
 
-        <div>
-            <label
-                for="name"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >Name</label
-            >
-            <Input
-                type="text"
-                id="name"
-                name="name"
-                bind:value={name}
-                placeholder="Your Name"
-                required
-            />
-        </div>
+        <!-- Hidden form for Netlify bot detection (REQUIRED) -->
+        <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+            <input type="text" name="name" />
+            <input type="email" name="email" />
+            <textarea name="message"></textarea>
+        </form>
 
-        <div>
-            <label
-                for="email"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >Email</label
-            >
-            <Input
-                type="email"
-                id="email"
-                name="email"
-                bind:value={email}
-                placeholder="your.email@example.com"
-                required
-            />
-        </div>
+        <!-- Actual visible form -->
+        <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            class="space-y-4"
+        >
+            <!-- Hidden fields for Netlify -->
+            <input type="hidden" name="form-name" value="contact" />
+            
+            <!-- Anti-spam honeypot field -->
+            <div style="display: none;">
+                <label>
+                    Don't fill this out if you're human: 
+                    <input name="bot-field" />
+                </label>
+            </div>
 
-        <div>
-            <label
-                for="message"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >Message</label
-            >
-            <Textarea
-                id="message"
-                name="message"
-                bind:value={message}
-                placeholder="Your message here..."
-                required
-                class="min-h-[150px]"
-            />
-        </div>
+            <div>
+                <label
+                    for="name"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >Name</label
+                >
+                <Input
+                    type="text"
+                    id="name"
+                    name="name"
+                    bind:value={name}
+                    placeholder="Your Name"
+                    required
+                />
+            </div>
 
-        <Button type="submit" class="w-full">
-            <Send class="mr-2 h-4 w-4" />
-            Send Message
-        </Button>
-    </form>
+            <div>
+                <label
+                    for="email"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >Email</label
+                >
+                <Input
+                    type="email"
+                    id="email"
+                    name="email"
+                    bind:value={email}
+                    placeholder="your.email@example.com"
+                    required
+                />
+            </div>
+
+            <div>
+                <label
+                    for="message"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >Message</label
+                >
+                <Textarea
+                    id="message"
+                    name="message"
+                    bind:value={message}
+                    placeholder="Your message here..."
+                    required
+                    class="min-h-[150px]"
+                />
+            </div>
+
+            <Button type="submit" class="w-full">
+                <Send class="mr-2 h-4 w-4" />
+                Send Message
+            </Button>
+        </form>
+    {/if}
 
     <div class="mt-8">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">
