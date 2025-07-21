@@ -3,16 +3,42 @@
     import { Input } from "$lib/components/ui/input";
     import { Textarea } from "$lib/components/ui/textarea";
     import { Send } from "lucide-svelte";
+    import { goto } from "$app/navigation";
 
     let name = "";
     let email = "";
     let message = "";
     let submitted = false;
+    let isSubmitting = false;
 
-    function handleSubmit() {
-        // This function will be called after Netlify processes the form
-        // We can show a thank you message here
-        submitted = true;
+    async function handleSubmit(event: Event) {
+        event.preventDefault();
+        
+        const form = event.target as HTMLFormElement;
+        const formData = new FormData(form);
+        
+        isSubmitting = true;
+        
+        try {
+            // Submit to Netlify's endpoint at the root
+            const response = await fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(formData as any).toString()
+            });
+            
+            if (response.ok) {
+                // Success! Redirect to success page
+                await goto("/contact/success");
+            } else {
+                throw new Error(`Form submission failed: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error("Form submission error:", error);
+            alert("There was an error submitting the form. Please try again.");
+        } finally {
+            isSubmitting = false;
+        }
     }
 </script>
 
@@ -33,14 +59,6 @@
             </p>
         </div>
     {:else}
-        <!-- 
-        IMPORTANT: Netlify forms in SvelteKit require:
-        1. The route must be prerendered
-        2. Hidden form for build-time detection
-        3. action="/contact/success" for redirect
-        4. Standard POST submission (no JavaScript interference)
-        -->
-
         <!-- Hidden form for Netlify bot detection (REQUIRED) -->
         <form name="contact" netlify netlify-honeypot="bot-field" hidden>
             <input type="text" name="name" />
@@ -48,14 +66,14 @@
             <textarea name="message"></textarea>
         </form>
 
-        <!-- Actual visible form -->
+        <!-- Actual visible form with JavaScript submission -->
         <form
             name="contact"
             method="POST"
-            action="/contact/success"
             data-netlify="true"
             netlify-honeypot="bot-field"
             class="space-y-4"
+            on:submit={handleSubmit}
         >
             <!-- Hidden fields for Netlify -->
             <input type="hidden" name="form-name" value="contact" />
@@ -81,6 +99,7 @@
                     bind:value={name}
                     placeholder="Your Name"
                     required
+                    disabled={isSubmitting}
                 />
             </div>
 
@@ -97,6 +116,7 @@
                     bind:value={email}
                     placeholder="your.email@example.com"
                     required
+                    disabled={isSubmitting}
                 />
             </div>
 
@@ -113,12 +133,13 @@
                     placeholder="Your message here..."
                     required
                     class="min-h-[150px]"
+                    disabled={isSubmitting}
                 />
             </div>
 
-            <Button type="submit" class="w-full">
+            <Button type="submit" class="w-full" disabled={isSubmitting}>
                 <Send class="mr-2 h-4 w-4" />
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
             </Button>
         </form>
     {/if}
