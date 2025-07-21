@@ -34,11 +34,11 @@
         </div>
     {:else}
         <!-- 
-        NETLIFY'S RECOMMENDED APPROACH:
-        1. Static HTML form with data-netlify="true"
-        2. Hidden form for bot detection during build
-        3. No action attribute - submits to same page
-        4. Netlify handles submission and shows default success page
+        IMPORTANT: Netlify forms in SvelteKit require:
+        1. The route must be prerendered
+        2. Hidden form for build-time detection
+        3. action="/contact/success" for redirect
+        4. Standard POST submission (no JavaScript interference)
         -->
 
         <!-- Hidden form for Netlify bot detection (REQUIRED) -->
@@ -52,8 +52,9 @@
         <form
             name="contact"
             method="POST"
+            action="/contact/success"
             data-netlify="true"
-            data-netlify-honeypot="bot-field"
+            netlify-honeypot="bot-field"
             class="space-y-4"
         >
             <!-- Hidden fields for Netlify -->
